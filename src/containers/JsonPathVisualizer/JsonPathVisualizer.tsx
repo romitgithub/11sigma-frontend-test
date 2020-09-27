@@ -2,12 +2,14 @@ import React from "react";
 import jsonPath from "jsonpath";
 import { DUMMY_JSON, DUMMY_JSON_BIG } from "data/";
 import styles from "./JsonPathVisualizer.module.css";
+import uploadImg from "assets/img/upload.png";
 
 import JsonObject from "components/JsonObject";
 
 interface State {
   query: string;
   filteredData: any;
+  jsonData: any;
 }
 
 interface Props {}
@@ -16,6 +18,7 @@ class JsonPathVisualizer extends React.Component<Props, State> {
   state = {
     query: "",
     filteredData: [],
+    jsonData: {},
   };
 
   handleJsonQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,12 +33,46 @@ class JsonPathVisualizer extends React.Component<Props, State> {
     );
   };
 
+  handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.files);
+    this.onChange(event);
+  };
+
+  onChange = (event: any) => {
+    var reader = new FileReader();
+    reader.onload = this.onReaderLoad;
+    reader.readAsText(event.target.files[0]);
+  };
+
+  onReaderLoad = (event: any) => {
+    console.log(event.target.result);
+    var obj = JSON.parse(event.target.result);
+    console.log(obj);
+    this.setState({ jsonData: obj });
+  };
+
   render() {
-    const { query, filteredData } = this.state;
+    const { query, filteredData, jsonData } = this.state;
 
     return (
-      <div>
+      <>
         <h4>JSON Path Visualizer</h4>
+
+        <label className={styles.fileUploadBox} htmlFor="fileUpload">
+          <img
+            className={styles.fileUploadIcon}
+            src={uploadImg}
+            alt="Upload Json File"
+          />
+          <p>Upload File</p>
+        </label>
+        <input
+          className={styles.fileUploadInput}
+          id="fileUpload"
+          type="file"
+          accept="application/json"
+          onChange={this.handleFileUpload}
+        />
 
         <input
           className={`${styles.inputField} ${styles.queryField}`}
@@ -44,10 +81,13 @@ class JsonPathVisualizer extends React.Component<Props, State> {
           placeholder="enter your json path query here..."
           onChange={this.handleJsonQueryChange}
         />
-        <div className={styles.jsonContainer}>
-          <JsonObject jsonObj={DUMMY_JSON} filteredData={filteredData} />
-        </div>
-      </div>
+
+        {jsonData && (
+          <div className={styles.jsonContainer}>
+            <JsonObject jsonObj={jsonData} filteredData={filteredData} />
+          </div>
+        )}
+      </>
     );
   }
 }

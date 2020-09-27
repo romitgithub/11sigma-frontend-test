@@ -1,6 +1,7 @@
 .jsonContainer {
   text-align: left;
   margin-top: 60px;
+  width: 100%;
 }
 
 .inputField {
@@ -12,4 +13,25 @@
 
 .queryField {
   margin-top: 40px;
+}
+
+.fileUploadBox {
+  border: 1px dashed #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  align-self: center;
+  padding: 12px;
+  border-radius: 4px;
+  width: 300px;
+  cursor: pointer;
+}
+
+.fileUploadIcon {
+  width: 40px;
+}
+
+.fileUploadInput {
+  display: none;
 }

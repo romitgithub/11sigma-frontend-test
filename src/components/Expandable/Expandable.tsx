@@ -1,5 +1,5 @@
 import React from "react";
-
+import styles from "./Expandable.module.css";
 interface Props {
   title: string;
   expanded?: boolean;
@@ -17,10 +17,16 @@ export default class ExpandableProperty extends React.Component<Props, State> {
   render() {
     return (
       <React.Fragment>
-        <div onClick={() => this.setState({ isOpen: !this.state.isOpen })}>
-          {this.props.title}
-          {this.state.isOpen ? "-" : "+"}
+        <div
+          className={styles.container}
+          onClick={() => this.setState({ isOpen: !this.state.isOpen })}
+        >
+          <span className={styles.toggleButton}>
+            {this.state.isOpen ? "-" : "+"}
+          </span>
+          {!this.state.isOpen ? this.props.title : ""}
         </div>
+
         {this.state.isOpen ? this.props.children : null}
         {React.Children.count(this.props.children) === 0 && this.state.isOpen
           ? "The list is empty!"

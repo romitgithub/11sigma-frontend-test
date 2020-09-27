@@ -28,3 +28,20 @@ export function isObject(object: any) {
 export function isArray(object: any) {
   return object != null && typeof object === "object" && Array.isArray(object);
 }
+
+export function getSummarizedJsonObjView(jsonObj: any) {
+  const isArr = isArray(jsonObj);
+  const isObj = isObject(jsonObj) && !isArr;
+
+  if (isObj) {
+    const keys = Object.keys(jsonObj);
+    return `{ ${keys[0]}: ${jsonObj[keys[0]]}, ... }`;
+  }
+
+  if (isArr) {
+    const keys = Object.keys(jsonObj[0]);
+    return `[ {${keys[0]}: ${jsonObj[0][keys[0]]}, ... }, ...]`;
+  }
+
+  return "aa";
+}

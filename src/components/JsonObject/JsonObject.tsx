@@ -1,6 +1,12 @@
 import React from "react";
-import { deepEqual, isObject, isArray } from "services/utils";
+import {
+  deepEqual,
+  isObject,
+  isArray,
+  getSummarizedJsonObjView,
+} from "services/utils";
 import KeyValue from "components/KeyValue";
+import Expandable from "components/Expandable";
 
 import styles from "./JsonObject.module.css";
 
@@ -45,19 +51,19 @@ export default function JsonObject({
       {Object.keys(jsonObj).map((key, index) => (
         <div key={index}>
           {isObject(jsonObj[key]) && !isArray(jsonObj[key]) && (
-            <>
-              <NestedHeader header={key} level={level} />
+            <Expandable title={getSummarizedJsonObjView(jsonObj[key])}>
+              {/* <NestedHeader header={key} level={level} /> */}
               <JsonObject
                 jsonObj={jsonObj[key]}
                 level={level}
                 filteredData={filteredData}
               />
-            </>
+            </Expandable>
           )}
 
           {isArray(jsonObj[key]) && (
-            <>
-              <NestedHeader header={key} level={level} />
+            <Expandable title={getSummarizedJsonObjView(jsonObj[key])}>
+              {/* <NestedHeader header={key} level={level} /> */}
               {jsonObj[key].map((item: any, index: number) => (
                 <JsonObject
                   key={index}
@@ -66,7 +72,7 @@ export default function JsonObject({
                   filteredData={filteredData}
                 />
               ))}
-            </>
+            </Expandable>
           )}
 
           {!isObject(jsonObj[key]) && !isArray(jsonObj[key]) && (
