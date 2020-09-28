@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./keyValue.module.css";
 
 interface Props {
-  label: string;
+  label: string | number;
   value: string | number | boolean;
   level: number;
   selected?: boolean;

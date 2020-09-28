@@ -29,19 +29,28 @@ export function isArray(object: any) {
   return object != null && typeof object === "object" && Array.isArray(object);
 }
 
-export function getSummarizedJsonObjView(jsonObj: any) {
-  const isArr = isArray(jsonObj);
-  const isObj = isObject(jsonObj) && !isArr;
+export function getSummarizedJsonObjView(metaKey: string, jsonObj: any): any {
+  console.log("Json Object Summary", metaKey, jsonObj);
 
-  if (isObj) {
-    const keys = Object.keys(jsonObj);
-    return `{ ${keys[0]}: ${jsonObj[keys[0]]}, ... }`;
+  const key = Object.keys(jsonObj)[0];
+  const value = jsonObj[key];
+
+  const isValueObj = isObject(value);
+  const isArr = isArray(jsonObj);
+
+  let summary;
+
+  if (isValueObj) {
+    summary = `{ ${key}: <object>, ... }`;
+  } else {
+    summary = `{ ${key}: ${value}, ... }`;
   }
 
   if (isArr) {
-    const keys = Object.keys(jsonObj[0]);
-    return `[ {${keys[0]}: ${jsonObj[0][keys[0]]}, ... }, ...]`;
+    summary = `[ ${summary}, ... ]`;
   }
 
-  return "aa";
+  summary = `{ ${metaKey}: ${summary} }`;
+
+  return summary;
 }

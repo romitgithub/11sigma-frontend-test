@@ -42,6 +42,9 @@ export default function JsonObject({
     (item: any) => !isObject(item)
   );
 
+  console.log(jsonObj, level);
+
+  
   return (
     <div
       className={`${styles.jsonObj} ${
@@ -49,33 +52,8 @@ export default function JsonObject({
       } level-${level}`}
     >
       {Object.keys(jsonObj).map((key, index) => (
-        <div key={index}>
-          {isObject(jsonObj[key]) && !isArray(jsonObj[key]) && (
-            <Expandable title={getSummarizedJsonObjView(jsonObj[key])}>
-              {/* <NestedHeader header={key} level={level} /> */}
-              <JsonObject
-                jsonObj={jsonObj[key]}
-                level={level}
-                filteredData={filteredData}
-              />
-            </Expandable>
-          )}
-
-          {isArray(jsonObj[key]) && (
-            <Expandable title={getSummarizedJsonObjView(jsonObj[key])}>
-              {/* <NestedHeader header={key} level={level} /> */}
-              {jsonObj[key].map((item: any, index: number) => (
-                <JsonObject
-                  key={index}
-                  jsonObj={item}
-                  level={level + 1}
-                  filteredData={filteredData}
-                />
-              ))}
-            </Expandable>
-          )}
-
-          {!isObject(jsonObj[key]) && !isArray(jsonObj[key]) && (
+        <div className={styles.objContainer}>
+          {!isObject(jsonObj[key]) ? (
             <KeyValue
               label={key}
               value={jsonObj[key]}
@@ -87,9 +65,25 @@ export default function JsonObject({
                 ).length !== 0
               }
             />
+          ) : (
+            <Expandable
+              expanded={true}
+              title={getSummarizedJsonObjView(key, jsonObj[key])}
+            >
+              <div>
+                <NestedHeader header={key} level={level} />
+                <JsonObject
+                  jsonObj={jsonObj[key]}
+                  level={level}
+                  filteredData={filteredData}
+                />
+              </div>
+            </Expandable>
           )}
         </div>
       ))}
+
+    
     </div>
   );
 }

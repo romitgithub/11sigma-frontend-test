@@ -34,8 +34,10 @@ class JsonPathVisualizer extends React.Component<Props, State> {
   };
 
   handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.files);
-    this.onChange(event);
+    if (event.target.files?.length) {
+      this.setState({ jsonData: {} });
+      this.onChange(event);
+    }
   };
 
   onChange = (event: any) => {
