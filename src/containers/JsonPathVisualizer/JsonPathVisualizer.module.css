@@ -2,36 +2,22 @@
   text-align: left;
   margin-top: 60px;
   width: 100%;
+  max-width: 500px;
+  min-height: 300px;
+}
+
+.formContainer {
+  position: relative;
+  width: 100%;
 }
 
 .inputField {
-  padding: 8px 16px;
-  width: 300px;
+  padding: 16px;
+  width: 360px;
   border-radius: 4px;
   border: 1px solid #cecece;
 }
 
 .queryField {
   margin-top: 40px;
-}
-
-.fileUploadBox {
-  border: 1px dashed #000000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  align-self: center;
-  padding: 12px;
-  border-radius: 4px;
-  width: 300px;
-  cursor: pointer;
-}
-
-.fileUploadIcon {
-  width: 40px;
-}
-
-.fileUploadInput {
-  display: none;
 }

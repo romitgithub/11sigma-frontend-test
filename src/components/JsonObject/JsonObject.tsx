@@ -42,9 +42,6 @@ export default function JsonObject({
     (item: any) => !isObject(item)
   );
 
-  console.log(jsonObj, level);
-
-  
   return (
     <div
       className={`${styles.jsonObj} ${
@@ -71,10 +68,12 @@ export default function JsonObject({
               title={getSummarizedJsonObjView(key, jsonObj[key])}
             >
               <div>
-                <NestedHeader header={key} level={level} />
+                {!isArray(jsonObj) && (
+                  <NestedHeader header={key} level={level + 1} />
+                )}
                 <JsonObject
                   jsonObj={jsonObj[key]}
-                  level={level}
+                  level={level + 1}
                   filteredData={filteredData}
                 />
               </div>
@@ -82,8 +81,6 @@ export default function JsonObject({
           )}
         </div>
       ))}
-
-    
     </div>
   );
 }

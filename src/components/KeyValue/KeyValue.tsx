@@ -16,7 +16,8 @@ export default function KeyValue({ label, value, level, selected }: Props) {
       } level-${level}`}
       data-level={level}
     >
-      {label}: {value === null ? "null" : value}
+      <span className={styles.label}>{label}</span>:{" "}
+      <span className={styles.value}>{value === null ? "null" : value}</span>
     </div>
   );
 }

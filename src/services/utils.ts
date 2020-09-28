@@ -30,21 +30,15 @@ export function isArray(object: any) {
 }
 
 export function getSummarizedJsonObjView(metaKey: string, jsonObj: any): any {
-  console.log("Json Object Summary", metaKey, jsonObj);
-
   const key = Object.keys(jsonObj)[0];
   const value = jsonObj[key];
 
   const isValueObj = isObject(value);
   const isArr = isArray(jsonObj);
 
-  let summary;
-
-  if (isValueObj) {
-    summary = `{ ${key}: <object>, ... }`;
-  } else {
-    summary = `{ ${key}: ${value}, ... }`;
-  }
+  let summary = isValueObj
+    ? `{ ${key}: <object>, ... }`
+    : `{ ${key}: ${value}, ... }`;
 
   if (isArr) {
     summary = `[ ${summary}, ... ]`;

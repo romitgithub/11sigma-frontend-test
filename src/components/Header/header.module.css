@@ -1,0 +1,27 @@
+.header {
+  background: #4FC3F7;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 24px 50px;
+  box-sizing: border-box;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  text-align: left;
+}
+
+.upperTitle {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.lowerTitle {
+  font-size: 24px;
+}
