@@ -1,5 +1,8 @@
 import React from "react";
-import jsonPath from "jsonpath";
+import { connect } from "react-redux";
+import debounce from "lodash.debounce";
+
+import * as actions from "./actions";
 import styles from "./JsonPathVisualizer.module.css";
 
 import FileUploadBox from "components/FileUploadBox";
@@ -11,7 +14,18 @@ interface State {
   jsonData: any;
 }
 
-interface Props {}
+interface Props {
+  jsonData: any;
+  query: string;
+  isLoading: boolean;
+  filteredJsonData: any;
+  updateJsonPathQuery: Function;
+  filterJsonData: Function;
+  saveFileData: Function;
+  startFileRead: Function;
+  stopFileRead: Function;
+  resetData: Function;
+}
 
 class JsonPathVisualizer extends React.Component<Props, State> {
   state = {
@@ -21,48 +35,38 @@ class JsonPathVisualizer extends React.Component<Props, State> {
   };
 
   handleJsonQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState(
-      {
-        query: event.target.value,
-      },
-      () => {
-        this.filterJsonData();
-      }
-    );
+    this.props.updateJsonPathQuery(event.target.value);
+    this.filterJsonData(event.target.value);
   };
 
-  filterJsonData = () => {
-    try {
-      const filteredData = jsonPath.query(
-        this.state.jsonData,
-        this.state.query
-      );
-      this.setState({ filteredData });
-    } catch (e) {
-      console.log(e);
-    }
+  filterJsonData = (query: string) => {
+    this.props.filterJsonData(query, this.props.jsonData);
   };
 
   handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
-      this.setState({ jsonData: {} });
-      this.onChange(event);
+      this.props.resetData();
+      this.props.startFileRead();
+      this.readDataFromFile(event);
     }
   };
 
-  onChange = (event: any) => {
+  readDataFromFile = (event: any) => {
     var reader = new FileReader();
     reader.onload = this.onReaderLoad;
     reader.readAsText(event.target.files[0]);
   };
 
   onReaderLoad = (event: any) => {
-    var obj = JSON.parse(event.target.result);
-    this.setState({ jsonData: obj });
+    var jsonData = JSON.parse(event.target.result);
+    this.props.stopFileRead();
+    this.props.saveFileData(jsonData);
   };
 
   render() {
-    const { query, filteredData, jsonData } = this.state;
+    console.log(this.props);
+
+    const { jsonData, query, filteredJsonData, isLoading } = this.props;
 
     return (
       <>
@@ -73,14 +77,17 @@ class JsonPathVisualizer extends React.Component<Props, State> {
             type="text"
             placeholder="enter your json path query here..."
             onChange={this.handleJsonQueryChange}
+            disabled={!jsonData}
           />
 
           <FileUploadBox handleFileUpload={this.handleFileUpload} />
         </div>
 
+        {isLoading && <p>Loading...</p>}
+
         {jsonData && (
           <div className={styles.jsonContainer}>
-            <JsonObject jsonObj={jsonData} filteredData={filteredData} />
+            <JsonObject jsonObj={jsonData} filteredData={filteredJsonData} />
           </div>
         )}
       </>
@@ -88,4 +95,29 @@ class JsonPathVisualizer extends React.Component<Props, State> {
   }
 }
 
-export default JsonPathVisualizer;
+const mapStateToProps = (state: any) => ({
+  ...state.jsonPathVisualizerReducer,
+});
+
+const mapDispatchToProps = (dispatch: Function) => ({
+  updateJsonPathQuery: (query: string) => {
+    dispatch(actions.updateJsonPathQuery(query));
+  },
+  filterJsonData: (query: string, jsonData: any) => {
+    dispatch(actions.filterJsonData(query, jsonData));
+  },
+  saveFileData: (jsonData: any) => {
+    dispatch(actions.saveFileData(jsonData));
+  },
+  startFileRead: () => {
+    dispatch(actions.startFileRead());
+  },
+  stopFileRead: () => {
+    dispatch(actions.stopFileRead());
+  },
+  resetData: () => {
+    dispatch(actions.resetData());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(JsonPathVisualizer);
