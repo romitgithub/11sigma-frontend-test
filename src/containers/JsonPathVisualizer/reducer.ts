@@ -6,8 +6,6 @@ const jsonPathVisualizerReducer = (
   action: { type: string; data: { [key: string]: any } }
 ) => {
   switch (action.type) {
-    case ACTION_TYPES.UPDATE_JSON_PATH_QUERY:
-      return { ...state, query: action.data };
     case ACTION_TYPES.FILTER_JSON_DATA:
       return { ...state, filteredJsonData: action.data };
     case ACTION_TYPES.SAVE_FILE_DATA:

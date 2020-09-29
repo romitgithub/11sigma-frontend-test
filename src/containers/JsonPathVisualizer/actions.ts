@@ -1,19 +1,12 @@
 import ACTION_TYPES from "./actionType";
 import jsonPath from "jsonpath";
 
-export const updateJsonPathQuery = (query: string) => {
-  return (dispatch: Function) => {
-    dispatch({
-      type: ACTION_TYPES.UPDATE_JSON_PATH_QUERY,
-      data: query,
-    });
-  };
-};
-
 export const filterJsonData = (query: string, jsonData: any) => {
   return (dispatch: Function) => {
     try {
+      console.log("time before start: ", new Date().getTime());
       const filteredData = jsonPath.query(jsonData, query);
+      console.log("time after end: ", new Date().getTime());
       dispatch({
         type: ACTION_TYPES.FILTER_JSON_DATA,
         data: filteredData,

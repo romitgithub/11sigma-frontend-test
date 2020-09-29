@@ -5,23 +5,11 @@ import {
   isArray,
   getSummarizedJsonObjView,
 } from "services/utils";
+import NestedHeader from "components/NestedHeader";
 import KeyValue from "components/KeyValue";
 import Expandable from "components/Expandable";
 
 import styles from "./JsonObject.module.css";
-
-interface NestedHeaderProps {
-  header: string;
-  level: number;
-}
-
-const NestedHeader = ({ header, level }: NestedHeaderProps) => {
-  return (
-    <div className={`${styles.header} level-${level}`} data-level={level}>
-      {header}
-    </div>
-  );
-};
 
 interface Props {
   jsonObj: any;
@@ -49,7 +37,7 @@ export default function JsonObject({
       } level-${level}`}
     >
       {Object.keys(jsonObj).map((key, index) => (
-        <div className={styles.objContainer}>
+        <div className={styles.objContainer} key={index}>
           {!isObject(jsonObj[key]) ? (
             <KeyValue
               label={key}
@@ -64,8 +52,16 @@ export default function JsonObject({
             />
           ) : (
             <Expandable
-              expanded={true}
-              title={getSummarizedJsonObjView(key, jsonObj[key])}
+              expanded={
+                isArray(jsonObj) && jsonObj.length > 50 && index > 50
+                  ? false
+                  : true
+              }
+              title={getSummarizedJsonObjView(
+                key,
+                jsonObj[key],
+                isArray(jsonObj)
+              )}
             >
               <div>
                 {!isArray(jsonObj) && (

@@ -1,7 +1,9 @@
 .keyValue {
   font-size: 14px;
+  line-height: 20px;
 }
 
 .selectedKeyValue {
   color: red;
+  font-weight: 600;
 }

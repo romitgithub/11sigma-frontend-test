@@ -5,6 +5,7 @@ import debounce from "lodash.debounce";
 import * as actions from "./actions";
 import styles from "./JsonPathVisualizer.module.css";
 
+import SearchBox from "components/SearchBox";
 import FileUploadBox from "components/FileUploadBox";
 import JsonObject from "components/JsonObject";
 
@@ -19,7 +20,6 @@ interface Props {
   query: string;
   isLoading: boolean;
   filteredJsonData: any;
-  updateJsonPathQuery: Function;
   filterJsonData: Function;
   saveFileData: Function;
   startFileRead: Function;
@@ -28,14 +28,15 @@ interface Props {
 }
 
 class JsonPathVisualizer extends React.Component<Props, State> {
-  state = {
-    query: "",
-    filteredData: [],
-    jsonData: {},
-  };
+  static whyDidYouRender = true;
+
+  constructor(props: Props) {
+    super(props);
+
+    this.filterJsonData = debounce(this.filterJsonData.bind(this), 1500);
+  }
 
   handleJsonQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.updateJsonPathQuery(event.target.value);
     this.filterJsonData(event.target.value);
   };
 
@@ -64,26 +65,24 @@ class JsonPathVisualizer extends React.Component<Props, State> {
   };
 
   render() {
-    console.log(this.props);
-
-    const { jsonData, query, filteredJsonData, isLoading } = this.props;
+    const { jsonData, filteredJsonData, isLoading } = this.props;
 
     return (
       <>
         <div className={styles.formContainer}>
-          <input
-            className={`${styles.inputField} ${styles.queryField}`}
-            value={query}
-            type="text"
-            placeholder="enter your json path query here..."
-            onChange={this.handleJsonQueryChange}
+          <SearchBox
             disabled={!jsonData}
+            handleInputChange={this.handleJsonQueryChange}
           />
 
           <FileUploadBox handleFileUpload={this.handleFileUpload} />
         </div>
 
-        {isLoading && <p>Loading...</p>}
+        {isLoading && <div className={styles.loader}>Loading {`{...}`}</div>}
+
+        {!isLoading && !jsonData && (
+          <div className={styles.loader}>Please upload a json file</div>
+        )}
 
         {jsonData && (
           <div className={styles.jsonContainer}>
@@ -100,9 +99,6 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: Function) => ({
-  updateJsonPathQuery: (query: string) => {
-    dispatch(actions.updateJsonPathQuery(query));
-  },
   filterJsonData: (query: string, jsonData: any) => {
     dispatch(actions.filterJsonData(query, jsonData));
   },

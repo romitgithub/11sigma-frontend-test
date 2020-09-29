@@ -1,0 +1,14 @@
+.inputField {
+  padding: 16px;
+  width: 360px;
+  border-radius: 4px;
+  border: 1px solid #cecece;
+}
+
+.queryField {
+  margin-top: 40px;
+}
+
+.queryField:disabled {
+  cursor: not-allowed;
+}

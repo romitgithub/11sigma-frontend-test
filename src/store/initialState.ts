@@ -3,7 +3,6 @@ const APP_INITIAL_STATE = {
     jsonData: null,
     isLoading: false,
     filteredJsonData: [],
-    query: "",
   },
 };
 
