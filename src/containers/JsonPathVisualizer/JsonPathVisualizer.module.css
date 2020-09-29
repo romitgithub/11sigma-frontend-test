@@ -2,13 +2,18 @@
   text-align: left;
   margin-top: 60px;
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   min-height: 300px;
 }
 
 .formContainer {
   position: relative;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  max-width: 600px;
+  padding: 20px;
+  margin-top: 20px;
 }
 
 .loader {

@@ -8,9 +8,6 @@
   border-radius: 4px;
   cursor: pointer;
   background-color: #ffffff;
-  position: absolute;
-  right: 24px;
-  top: 42px;
   border: 1px dashed black;
   font-size: 12px;
 }
