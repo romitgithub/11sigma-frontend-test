@@ -48,7 +48,7 @@ export function getSummarizedJsonObjView(
     : `{ ${key}: ${value}, ... }`;
 
   if (isArr) {
-    summary = `[ ${summary}, ... ]`;
+    summary = !isEmpty ? `[ ${summary}, ... ]` : "[]";
   }
 
   if (!isChildOfArray) {
