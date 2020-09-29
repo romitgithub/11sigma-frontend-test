@@ -34,13 +34,16 @@ export function getSummarizedJsonObjView(
   jsonObj: any,
   isChildOfArray: boolean
 ): any {
+  const isEmpty = Object.keys(jsonObj).length === 0;
   const key = Object.keys(jsonObj)[0];
   const value = jsonObj[key];
 
   const isValueObj = isObject(value);
   const isArr = isArray(jsonObj);
 
-  let summary = isValueObj
+  let summary = isEmpty
+    ? "{}"
+    : isValueObj
     ? `{ ${key}: [object], ... }`
     : `{ ${key}: ${value}, ... }`;
 
@@ -53,11 +56,4 @@ export function getSummarizedJsonObjView(
   }
 
   return summary;
-}
-
-export function isExpanded(jsonObj: any, index: string) {
-  if (isArray(jsonObj)) {
-    if (isObject(jsonObj[0])) {
-    }
-  }
 }

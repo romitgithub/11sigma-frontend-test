@@ -33,7 +33,7 @@ class JsonPathVisualizer extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.filterJsonData = debounce(this.filterJsonData.bind(this), 1500);
+    this.filterJsonData = debounce(this.filterJsonData.bind(this), 600);
   }
 
   handleJsonQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
