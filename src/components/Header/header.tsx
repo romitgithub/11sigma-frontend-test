@@ -8,6 +8,13 @@ export default function Header() {
         <div className={styles.upperTitle}>{`{ ... }`}</div>
         <div className={styles.lowerTitle}>JSON Path Visualizer</div>
       </div>
+      <a
+        target="_blank"
+        className={styles.gitRepoLink}
+        href="https://github.com/romitgithub/11sigma-frontend-test"
+      >
+        Github Repo
+      </a>
     </header>
   );
 }
